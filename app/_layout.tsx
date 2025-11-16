@@ -1,8 +1,7 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -14,16 +13,27 @@ export const unstable_settings = {
 
 function AppStack() {
   const { user, loading } = useAuth();
-  if (loading)
+  
+  // Debug logging
+  console.log('AppStack render - user:', user, 'loading:', loading);
+  
+  if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator />
+        <ActivityIndicator size="large" />
+        <Text style={{ marginTop: 10 }}>Loading...</Text>
       </View>
     );
+  }
+
+  // More explicit null check
+  const isAuthenticated = user !== null && user !== undefined;
+  
+  console.log('isAuthenticated:', isAuthenticated);
 
   return (
-    <Stack>
-      {user ? (
+    <Stack screenOptions={{ headerShown: false }}>
+      {isAuthenticated ? (
         <>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
