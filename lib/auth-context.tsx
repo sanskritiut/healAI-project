@@ -1,65 +1,102 @@
-import { auth, isFirebaseConfigured } from '@/app/firebase/firebaseconf';
+import firebaseConfig from '@/app/firebase/firebaseconf';
 import {
-    createUserWithEmailAndPassword,
-    onAuthStateChanged,
-    signInWithEmailAndPassword,
-    signOut,
-    type User as FirebaseUser,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  User
 } from 'firebase/auth';
-import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type AuthUser = FirebaseUser | null;
+const { auth, isFirebaseConfigured } = firebaseConfig;
 
-type AuthContextType = {
-  user: AuthUser;
+interface AuthContextType {
+  user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOutUser: () => Promise<void>;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
 }
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser>(null);
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: true,
+  signIn: async () => {},
+  signUp: async () => {},
+  signOutUser: async () => {},
+});
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('=== AUTH CONTEXT INIT ===');
+    console.log('Firebase configured?', isFirebaseConfigured);
+    console.log('Auth object?', !!auth);
+
     if (!isFirebaseConfigured || !auth) {
-      // If Firebase is not configured, skip listening and set loading to false.
-      setUser(null);
+      console.warn('Firebase not configured, skipping auth');
       setLoading(false);
       return;
     }
 
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u ?? null);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+      setUser(user);
       setLoading(false);
     });
-    return () => unsub();
+
+    return unsubscribe;
   }, []);
 
-  async function signIn(email: string, password: string) {
-    if (!isFirebaseConfigured || !auth) throw new Error('Firebase is not configured');
-    await signInWithEmailAndPassword(auth, email, password);
-  }
+  const signIn = async (email: string, password: string) => {
+    console.log('AuthContext.signIn called');
+    if (!auth) {
+      const error = new Error('Firebase not configured');
+      console.error(error);
+      throw error;
+    }
+    
+    console.log('Calling signInWithEmailAndPassword...');
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      console.log('signInWithEmailAndPassword success:', result.user.uid);
+      return;
+    } catch (error) {
+      console.error('signInWithEmailAndPassword failed:', error);
+      throw error;
+    }
+  };
 
-  async function signUp(email: string, password: string) {
-    if (!isFirebaseConfigured || !auth) throw new Error('Firebase is not configured');
-    await createUserWithEmailAndPassword(auth, email, password);
-  }
+  const signUp = async (email: string, password: string) => {
+    console.log('AuthContext.signUp called');
+    if (!auth) {
+      const error = new Error('Firebase not configured');
+      console.error(error);
+      throw error;
+    }
+    
+    console.log('Calling createUserWithEmailAndPassword...');
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('createUserWithEmailAndPassword success:', result.user.uid);
+      return;
+    } catch (error) {
+      console.error('createUserWithEmailAndPassword failed:', error);
+      throw error;
+    }
+  };
 
-  async function signOutUser() {
-    if (!isFirebaseConfigured || !auth) return;
+  const signOutUser = async () => {
+    console.log('AuthContext.signOutUser called');
+    if (!auth) {
+      const error = new Error('Firebase not configured');
+      console.error(error);
+      throw error;
+    }
     await signOut(auth);
-  }
+  };
 
   return (
     <AuthContext.Provider value={{ user, loading, signIn, signUp, signOutUser }}>
@@ -67,3 +104,5 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     </AuthContext.Provider>
   );
 }
+
+export const useAuth = () => useContext(AuthContext);

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Alert, Button, Platform, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import firebaseConfig from '@/app/firebase/firebaseconf';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import firebaseConfig from '@/constants/firebaseConfig';
 import { useAuth } from '@/lib/auth-context';
 
 const { isFirebaseConfigured, auth } = firebaseConfig;

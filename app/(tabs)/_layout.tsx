@@ -1,5 +1,4 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -20,6 +19,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
+          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
@@ -27,6 +27,7 @@ export default function TabLayout() {
         name="explore"
         options={{
           title: 'Explore',
+          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
@@ -34,6 +35,7 @@ export default function TabLayout() {
         name="chat"
         options={{
           title: 'Chat',
+          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="message.fill" color={color} />,
         }}
       />
@@ -41,6 +43,7 @@ export default function TabLayout() {
         name="history"
         options={{
           title: 'History',
+          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="clock.fill" color={color} />,
         }}
       />
@@ -48,6 +51,7 @@ export default function TabLayout() {
         name="records"
         options={{
           title: 'Records',
+          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="folder.fill" color={color} />,
         }}
       />
@@ -55,6 +59,7 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'Settings',
+          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
         }}
       />
