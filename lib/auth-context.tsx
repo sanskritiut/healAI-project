@@ -1,4 +1,4 @@
-import firebaseConfig from '@/app/firebase/firebaseconf';
+import firebaseConfig from '@/src/firebase';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
