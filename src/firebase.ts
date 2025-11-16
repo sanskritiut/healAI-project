@@ -3,13 +3,13 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCHapsoVKSnQJlynX1xBgiGQmMtAY6Zdo4',
-  authDomain: 'healai-b9bfb.firebaseapp.com',
-  projectId: 'healai-b9bfb',
-  storageBucket: 'healai-b9bfb.firebasestorage.app',
-  messagingSenderId: '915874161016',
-  appId: '1:915874161016:web:d9937dd480c02679a7a88d',
-  measurementId: 'G-T9EEWJW2Y9'
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 export const isFirebaseConfigured = Boolean(

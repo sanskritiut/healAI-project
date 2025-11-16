@@ -34,7 +34,7 @@ type Article = {
 // Gemini configuration
 // TODO: Move to environment variables
 // Use: process.env.EXPO_PUBLIC_GEMINI_API_KEY
-const API_KEY = 'AIzaSyDtH5UVIvRe8vK82emmZ7ccrEEBY2H6t9U';
+const API_KEY = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${API_KEY}`;
 
 const SYSTEM_PROMPT = `You are HealAI, a helpful and empathetic assistant.
