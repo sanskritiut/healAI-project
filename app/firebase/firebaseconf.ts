@@ -1,9 +1,7 @@
 import { getApps, initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-// If you had config values in the removed `src/firebaseConfig.ts`, they are
-// embedded here as the default `firebaseConfigFromFile`. Otherwise we fall
-// back to environment variables.
+
 const firebaseConfigFromFile = {
   apiKey: "AIzaSyCHapsoVKSnQJlynX1xBgiGQmMtAY6Zdo4",
   authDomain: "healai-b9bfb.firebaseapp.com",
@@ -14,7 +12,6 @@ const firebaseConfigFromFile = {
   measurementId: "G-T9EEWJW2Y9",
 };
 
-// Prefer explicit config values from embedded defaults, otherwise environment.
 const firebaseConfig = {
   apiKey: firebaseConfigFromFile?.apiKey ?? process.env.FIREBASE_API_KEY ?? '',
   authDomain: firebaseConfigFromFile?.authDomain ?? process.env.FIREBASE_AUTH_DOMAIN ?? '',
@@ -29,21 +26,32 @@ export const isFirebaseConfigured = Boolean(
 );
 
 let app: ReturnType<typeof initializeApp> | null = null;
+let auth: ReturnType<typeof getAuth> | null = null;
+let db: ReturnType<typeof getFirestore> | null = null;
+
 if (isFirebaseConfigured) {
-  if (!getApps().length) {
-    app = initializeApp(firebaseConfig);
-  } else {
-    app = getApps()[0];
+  try {
+    if (!getApps().length) {
+      app = initializeApp(firebaseConfig);
+    } else {
+      app = getApps()[0];
+    }
+    
+    auth = getAuth(app);
+    db = getFirestore(app);
+    
+    console.log('Firebase initialized successfully');
+  } catch (error) {
+    console.error('Firebase initialization error:', error);
+    app = null;
+    auth = null;
+    db = null;
   }
 } else {
-  // Keep exports defined so importing modules won't throw in Expo Go.
-  app = null;
   console.warn(
     'Firebase is not configured. Set FIREBASE_API_KEY, FIREBASE_APP_ID, and FIREBASE_PROJECT_ID to enable Firebase functionality.'
   );
 }
 
-export const auth = app ? getAuth(app) : null;
-export const db = app ? getFirestore(app) : null;
-
+export { auth, db };
 export default { app, auth, db, isFirebaseConfigured };

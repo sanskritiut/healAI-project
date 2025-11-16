@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "915874161016",
+    "project_id": "healai-b9bfb",
+    "storage_bucket": "healai-b9bfb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915874161016:android:ad39f8eb2cd1ab03a7a88d",
+        "android_client_info": {
+          "package_name": "Heal.AI"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG-Tr92umScxP7VI20TkvBeLTM7rQw8qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
