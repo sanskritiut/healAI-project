@@ -1,4 +1,4 @@
-import { auth, isFirebaseConfigured } from '@/constants/firebaseConfig';
+import { auth, isFirebaseConfigured } from '@/app/firebase/firebaseconf';
 import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
@@ -7,7 +7,7 @@ import {
     type User as FirebaseUser,
 } from 'firebase/auth';
 import type { ReactNode } from 'react';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type AuthUser = FirebaseUser | null;
 
